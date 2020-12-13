@@ -1,18 +1,16 @@
-// create h1 header Weather dashboard with Jumbotron
+// create variables
+const apiKey = ""
 
 var div = $("<div class='container'>");
 
-// load jumbotron header
+// load jumbotron header and basic grid
     div.html(`
     <div class="jumbotron jumbotron-fluid">
     <div class="container">
     <h1 class="display-4">Weather Dashboard</h1>
     </div>
-    </div>`);
-    $("body").append(div);
+    </div>
 
-   // create grid system
-    div.html(`
     <main id="main" class="container">
         <aside id="aside" class="col">
             <div id="search" class="row">
@@ -25,7 +23,8 @@ var div = $("<div class='container'>");
     </main>`);
     $("body").append(div);
 
-    
+    var queryURL = "api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apikey;
+
 // create function which makes initial query with last localstorage city
 
 // create search input and submit button in id search
