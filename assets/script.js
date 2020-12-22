@@ -1,29 +1,84 @@
 // create variables
-const apiKey = ""
+const apiKey = "a68c335056a4a3d1000ef6aa6b67cc0b";
+const searchedCities = [];
+let previousSearches;
+// var div = $("<div class='container'>");
 
-var div = $("<div class='container'>");
+var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=";
 
-// load jumbotron header and basic grid
-    div.html(`
-    <div class="jumbotron jumbotron-fluid">
-    <div class="container">
-    <h1 class="display-4">Weather Dashboard</h1>
-    </div>
-    </div>
+init();
 
-    <main id="main" class="container">
-        <aside id="aside" class="col">
-            <div id="search" class="row">
-            <div id="previous" "class="row">
-        </aside>
-        <div id="result" class="col">    
-            <div id"current" class="row">
-            <div id="forecast" class="row">    
-        </div>    
-    </main>`);
-    $("body").append(div);
+function init(){
 
-    var queryURL = "api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apikey;
+    // request last cities from localstorage
+
+    let previousSearch = localStorage.getItem("cities");
+    console.log(previousSearch);
+
+    //call getweather for last item in local storage
+    
+    let lastIndexLocalStorage = previousSearch.length;
+    console.log(lastIndexLocalStorage);
+
+    // diaplay weather for the above inti
+}
+
+$("#searchButton").on("click", searchWeather);
+
+function searchWeather(){
+    var cityName = $("#citySearch").val().trim();
+    console.log(cityName);
+    getCurrentWeather(cityName); // temp, humidity, windspeed, uv
+    getFiveDayForecast(cityName); // five days into future five cards
+}
+
+function getCurrentWeather(city){
+   var queryWeatherUrl = queryURL+city+"&appid="+apiKey;
+  
+    $.ajax({
+        url: queryWeatherUrl,
+        method: "GET"
+    }).then(
+            function(res) {
+            console.log(res);
+            var city = res.name;
+            var humidity = res.main.humidity
+
+            renderTodayWeather(city, humidity)
+
+            addCityToLS(city)
+
+        });
+
+}
+
+function getFiveDayForecast(city){
+     console.log(city);
+
+}
+
+function renderTodayWeather(city, humidity){
+    
+}
+
+function addCityToLS(city){
+
+
+    searchedCities.push(city)
+        console.log(searchedCities);
+    localStorage.setItem("cities", searchedCities);
+}
+
+function getCityFromLS(cities){
+
+    for (let i = 0; i < cities.length; i++) {
+
+        $(previousSearches[i]).val(localStorage.getItem(cities[i]));
+        consoleLog(previousSearches);
+        return(previousSearches);
+      };
+
+}
 
 // create function which makes initial query with last localstorage city
 
@@ -46,14 +101,9 @@ var div = $("<div class='container'>");
 // 5 columns
 
 
-// create input form field for user input
 
 
 
-// create "submit" button to start searching for selected city
-
-
-//  send api request
 
 
 
