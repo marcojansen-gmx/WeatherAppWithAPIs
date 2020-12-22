@@ -17,6 +17,16 @@
     </div>
     </div>
 
+    <div class="container-fluid">
+      <div>
+        <h4> Search a city</h4>
+        <input id="citySearch" type="text" placeholder="plz enter a city.." name="search">
+        <button id="searchButton" class="btn btn-primary" style="width:40px;">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+      
+
     <main id="main" class="container d-flex p-2">
         
         <aside id="aside" class="col d-flex justify-content-start">
@@ -27,17 +37,18 @@
         <div id="result" class="col d-flex justify-content-center">    
             <div id="current" class="row ">
               <ul>
-                <li>City name:<span id="cityCurrent"></span></li>
-                <li>Date:<span id="dateCurrent"></span></li>
-                <li>Icon:<span id="iconCurrent"></span></li>
-                <li>Temperature:<span id="tempCurrent"></span></li>
-                <li>Humidity:<span id="humidityCurrent"></span></li>
-                <li>Wind speed:<span id="windCurrent"></span></li>
-                <li>UV index:<span id="UVCurrent"></span></li>
+                <!-- <li id="dateCurrent"></li> -->
+                <li id="cityCurrent"></li>
+                <li id="iconImage"></li>
+                <li id="tempCurrent"></li>
+                <li id="humidityCurrent"></li>
+                <li id="windCurrent"></li>
+                <li id="UVCurrent"></li>
               </ul>
             </div>
-                          
-            <div id="forecast" class="row"> 
+      
+    </main>
+    <div id="forecast" class="row"> 
               <div id="dayOne" class="col d-flex justify-content-start">
                 test  
               </div>
@@ -58,17 +69,6 @@
                 test
               </div>
           </div>
-    </main>
-
-    <div class="container-fluid">
-      <div>
-        <h4> Search a city</h4>
-        <input id="citySearch" type="text" placeholder="plz enter a city.." name="search">
-        <button id="searchButton" class="btn btn-primary" style="width:40px;">
-          <i class="fa fa-search"></i>
-        </button>
-      </div>
-      
     </div>
 
 
