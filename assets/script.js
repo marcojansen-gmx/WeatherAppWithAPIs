@@ -70,24 +70,10 @@ function searchWeather() {
     console.log(cityName);
     getCurrentWeather(cityName); // temp, humidity, windspeed, uv
     getFiveDayForecast(cityName); // five days into future five cards
+    getUVIndex(lon,lat);
 }
 
-// function to request and return UV Index
-function getUVIndex(lon,lat){
-    let queryURLUVIndex = "https://api.openweathermap.org/data/2.5/uvi?lat="+lat+"&lon="+lon+"&appid="+apiKey;
-    $.ajax({
-        url: queryURLUVIndex,
-        method: "GET"
-    }).then(
-        function (res) {
-            console.log(res);
-            indexUV = res.value;
-            console.log(indexUV);
-            renderUVIndexToday(indexUV)
-            return indexUV;                  
-        });
-}
-
+// function to request and return current weather
 function getCurrentWeather(city) {
     clear();
     addCityToLS(city);
@@ -114,6 +100,20 @@ function getCurrentWeather(city) {
 
 }
 
+// function to request and return UV Index
+function getUVIndex(lon,lat){
+    let queryURLUVIndex = "https://api.openweathermap.org/data/2.5/uvi?lat="+lat+"&lon="+lon+"&appid="+apiKey;
+    $.ajax({
+        url: queryURLUVIndex,
+        method: "GET"
+    }).then(
+        function (res) {
+            console.log(res);
+            indexUV = res.value;
+            renderUVIndexToday(indexUV)                
+        });
+}
+
 function getFiveDayForecast(city) {
     console.log(city);
 
@@ -123,8 +123,8 @@ function renderTodayWeather(city, humidity, iconURL, temperature, wind) {
     // $("#dateCurrent").text(`Date: ${city}`);
     $("#cityCurrent").text(`City: ${city}`);
     $("#tempCurrent").text(`Temperature: ${temperature} °C`);
-    $("#humidityCurrent").text(`City: ${humidity}`);
-    $("#windCurrent").text(`Wind speed: ${wind}`);
+    $("#humidityCurrent").text(`Humidity: ${humidity} %`);
+    $("#windCurrent").text(`Wind speed: ${wind} km/h`);
     
     let img = $('<img>');
     img.attr("src", iconURL);
