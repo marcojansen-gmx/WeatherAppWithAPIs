@@ -13,6 +13,7 @@ init();
 
 function init() {
     let city = getLastSearch();
+    
     // request last cities from localstorage
 
     if (city === "empty") {
@@ -21,7 +22,9 @@ function init() {
     else {
         clear();
         getCurrentWeather(city);
-        getFiveDayForecast(city)
+        getFiveDayForecast(city);
+        getCurrentDate();
+        getUVIndex(lon,lat);
     }
     // let previousSearch = localStorage.getItem("cities");
     // console.log(previousSearch);
@@ -45,6 +48,16 @@ function clear() {
     $("#UVCurrent").empty();
 }
 
+
+  // moment.js date/time request
+  function getCurrentDate() {
+    document.getElementById("dateCurrent")
+      .innerHTML = moment().format('MMMM Do YYYY');
+  }
+  
+//   setInterval(update, 1000);
+
+
 function getLastSearch() {
     let city = "empty";
     // get values of local storage;
@@ -58,6 +71,7 @@ function getLastSearch() {
     }
     else {        
         city = searchedValues[searchedValues.length - 1];
+        console.log(city)
         return city;
     }
 
@@ -71,6 +85,7 @@ function searchWeather() {
     getCurrentWeather(cityName); // temp, humidity, windspeed, uv
     getFiveDayForecast(cityName); // five days into future five cards
     getUVIndex(lon,lat);
+    getCurrentDate();
 }
 
 // function to request and return current weather
