@@ -1,3 +1,4 @@
+
 // create variables
 const apiKey = "a68c335056a4a3d1000ef6aa6b67cc0b";
 const searchedCities = [];
@@ -17,25 +18,23 @@ function init() {
     // request last cities from localstorage
 
     if (city === "empty") {
-        // searchByGeolocation();
-    }
-    else {
         clear();
         getCurrentWeather(city);
         getFiveDayForecast(city);
         getCurrentDate();
         getUVIndex(lon,lat);
     }
-    // let previousSearch = localStorage.getItem("cities");
-    // console.log(previousSearch);
-
-    //call getweather for last item in local storage
-
-    // let lastIndexLocalStorage = previousSearch.length;
-    // console.log(lastIndexLocalStorage);
-
-    // diaplay weather for the above inti
 }
+//     // let previousSearch = localStorage.getItem("cities");
+//     // console.log(previousSearch);
+
+//     //call getweather for last item in local storage
+
+//     // let lastIndexLocalStorage = previousSearch.length;
+//     // console.log(lastIndexLocalStorage);
+
+//     // diaplay weather for the above inti
+// }
 
 function clear() {
     //all data in the weather 
@@ -61,17 +60,18 @@ function clear() {
 function getLastSearch() {
     let city = "empty";
     // get values of local storage;
+   
     let searchedValues = JSON.parse(localStorage.getItem("cities"));
 
-    console.log(searchedValues.length);
+    console.log(searchedValues);
 
-    if (searchedValues.length == null) {
+    if (searchedValues == null) {
         city = "Perth";
         return city;
     }
     else {        
         city = searchedValues[searchedValues.length - 1];
-        console.log(city)
+        console.log(city);
         return city;
     }
 
@@ -109,7 +109,9 @@ function getCurrentWeather(city) {
             console.log(city, humidity, temperature, wind)
             renderTodayWeather(city, humidity, iconURL, temperature, wind)
             let lon = res.coord.lon;
+            console.log(lon);
             let lat = res.coord.lat;
+            console.log(lat);
             getUVIndex(lon,lat);
         });
 
@@ -159,4 +161,4 @@ function addCityToLS(city) {
     searchedCities.push(city)
     console.log(searchedCities);
     localStorage.setItem("cities", JSON.stringify(searchedCities));
-}
+};
