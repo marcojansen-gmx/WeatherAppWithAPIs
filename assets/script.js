@@ -75,13 +75,13 @@ function renderSearchedCities(searchedCities){
     $("#previousSearch").append(ul);
     let ulEl = $("#previousSearch ul");
     
-    // console.log(searchedCities.length)
-    // for (let i = searchedCities.length; i >= 0; i--) {
-    //     let li = $("<li>");
-    //     // li.addClass
-    //     li.text(searchedCities[i]);
-    //      ulEl.append(li);
-    // }
+    console.log(searchedCities.length)
+    for (let i = searchedCities.length; i >= 0; i--) {
+        let li = $("<li>");
+        // li.addClass
+        li.text(searchedCities[i]);
+         ulEl.append(li);
+    }
 }
 
 $("#searchButton").on("click", searchWeather);
@@ -93,7 +93,7 @@ function searchWeather() {
     getFiveDayForecast(cityName); // five days into future five cards
     // getUVIndex(lon,lat);
     getCurrentDate();
-    renderSearchedCities();
+    renderSearchedCities(cityName);
 }
 
 // function to request and return current weather
