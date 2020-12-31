@@ -35,6 +35,21 @@ function clear() {
     $("#humidityCurrent").empty();
     $("#windCurrent").empty();
     $("#UVCurrent").empty();
+    $("#dayOne").empty();
+    $("#humidityDayOne").empty();
+    $("#iconImageDayOne").empty();
+    $("#dayTwo").empty();
+    $("#humidityDayTwo").empty();
+    $("#iconImageDayTwo").empty();
+    $("#dayThree").empty();
+    $("#humidityDayThree").empty();
+    $("#iconImageDayThree").empty();
+    $("#dayFour").empty();
+    $("#humidityDayFour").empty();
+    $("#iconImageDayFour").empty();
+    $("#dayFive").empty();
+    $("#humidityDayFive").empty();
+    $("#iconImageDayFive").empty();
 }
 
 
