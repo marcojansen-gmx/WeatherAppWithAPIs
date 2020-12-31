@@ -101,7 +101,6 @@ function getCurrentWeather(city) {
     clear();
     addCityToLS(city);
     var queryWeatherUrl = queryURL + city + "&appid=" + apiKey;
-    getFiveDayForecast(city);
     $.ajax({
         url: queryWeatherUrl,
         method: "GET"
@@ -121,7 +120,6 @@ function getCurrentWeather(city) {
             let lat = res.coord.lat;
             console.log(lat);
             getUVIndex(lon,lat);
-            getFiveDayForecast(city)
         });
 
 }
