@@ -8,7 +8,6 @@ let indexUV;
 // URL queries
 let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=";
 let queryURL5Days = "https://api.openweathermap.org/data/2.5/forecast?q=";
-// let queryURLUVIndex = "https://api.openweathermap.org/data/2.5/uvi?lat={lat}&lon={lon}&appid={API key}";
 
 init();
 
@@ -25,6 +24,11 @@ function init() {
         getUVIndex(lon,lat);
     }
 }
+
+$("#previousSearch ul").on("click", "li", function(){
+    getCurrentWeather($(this).text());
+    getFiveDayForecast($(this).text());
+})
 
 function clear() {
     //all data in the weather 
@@ -64,7 +68,7 @@ document.getElementById("dateCurrent")
 function getLastSearch() {
     let city = "empty";
     // get values of local storage;   
-    let searchedValues = JSON.parse(localStorage.getItem("cities"));
+    let searchedValues = JSON.parse(localStorage.getItem("cities")) || [];
     renderSearchedCities(searchedValues);    
 }
 
@@ -72,28 +76,28 @@ function renderSearchedCities(searchedCities){
     console.log(searchedCities);
     let ul = $("<ul>");
     ul.addClass("list-group");
-    $("#previousSearch").append(ul);
-    let ulEl = $("#previousSearch ul");
-    
+    $("#previousSearch").append(ul); 
     console.log(searchedCities.length)
     for (let i = searchedCities.length; i >= 0; i--) {
-        let li = $("<li>");
-        // li.addClass
-        li.text(searchedCities[i]);
-         ulEl.append(li);
+        makeRow(searchedCities[i]);
     }
+}
+
+function makeRow(city){
+    let li = $("<li>").addClass("list-group-item bg-primary text-light").text(city);
+    $("#previousSearch ul").append(li);
 }
 
 $("#searchButton").on("click", searchWeather);
 
 function searchWeather() {
     var cityName = $("#citySearch").val().trim();
-    console.log(cityName);
-    getCurrentWeather(cityName); // temp, humidity, windspeed, uv
-    getFiveDayForecast(cityName); // five days into future five cards
-    // getUVIndex(lon,lat);
-    getCurrentDate();
-    renderSearchedCities(cityName);
+           console.log(cityName);
+        getCurrentWeather(cityName); // temp, humidity, windspeed, uv
+        getFiveDayForecast(cityName); // five days into future five cards
+        // getUVIndex(lon,lat);
+        getCurrentDate();
+        makeRow(cityName);   
 }
 
 // function to request and return current weather
@@ -133,33 +137,38 @@ function getFiveDayForecast(city) {
     }).then(
         function (res) {
             console.log(res);
-            let tempDay1 = Math.round((res.list[0].main.temp - 273.15) * 100) / 100;
-            let tempDay2 = Math.round((res.list[1].main.temp - 273.15) * 100) / 100;
-            let tempDay3 = Math.round((res.list[2].main.temp - 273.15) * 100) / 100;
-            let tempDay4 = Math.round((res.list[3].main.temp - 273.15) * 100) / 100;
-            let tempDay5 = Math.round((res.list[4].main.temp - 273.15) * 100) / 100;
-            console.log(tempDay1, tempDay2, tempDay3, tempDay4, tempDay5)
-            let humidity1 = res.list[0].main.humidity;
-            let humidity2 = res.list[1].main.humidity;
-            let humidity3 = res.list[2].main.humidity;
-            let humidity4 = res.list[3].main.humidity;
-            let humidity5 = res.list[4].main.humidity;
-            console.log(humidity1, humidity2, humidity3, humidity4, humidity5)
-            let iconIDForecast1 = res.list[0].weather[0].icon;
-            let iconIDForecast2 = res.list[1].weather[0].icon;
-            let iconIDForecast3 = res.list[2].weather[0].icon;
-            let iconIDForecast4 = res.list[3].weather[0].icon;
-            let iconIDForecast5 = res.list[4].weather[0].icon;
-            console.log(iconIDForecast1, iconIDForecast2, iconIDForecast3, iconIDForecast4, iconIDForecast5);
-            let iconURLForecast1Png = `https://openweathermap.org/img/wn/${iconIDForecast1}@2x.png`
-            let iconURLForecast2Png = `https://openweathermap.org/img/wn/${iconIDForecast2}@2x.png`
-            let iconURLForecast3Png = `https://openweathermap.org/img/wn/${iconIDForecast3}@2x.png`
-            let iconURLForecast4Png = `https://openweathermap.org/img/wn/${iconIDForecast4}@2x.png`
-            let iconURLForecast5Png = `https://openweathermap.org/img/wn/${iconIDForecast5}@2x.png`
-            renderFiveDayForecast(tempDay1,tempDay2,tempDay3,tempDay4,tempDay5,humidity1,humidity2,humidity3,humidity4,humidity5,iconURLForecast1Png,iconURLForecast2Png,iconURLForecast3Png,iconURLForecast4Png,iconURLForecast5Png); 
+            $("#forecast").html("<h4 class=\"mt-3\">5-Day Forecast:</h4>").append("<div class=\"row\">")
+            for (var i = 0; i < res.list.length - 1; i++) {
+
+                if (res.list[i].dt_txt.indexOf("15:00:00") !== -1) {
+                    let humidity = res.list[i].main.humidity;
+                    let temp = Math.round((res.list[i].main.temp - 273.15) * 100) / 100;
+                    let iconIDForecast = res.list[i].weather[0].icon;
+                    let iconURLForecastUrl = `https://openweathermap.org/img/wn/${iconIDForecast}@2x.png`
+
+                    let col = $("<div>").addClass("col-md-2");
+                    let card = $("<div>").addClass("card bg-primary text-white");
+                    let body = $("<div>").addClass("card-body p-2");
+
+                    let title = $("<h6>").addClass("card-title").text(new Date(res.list[i].dt_txt).toLocaleDateString());
+
+                    let p1 = $("<p>").addClass("card-text").text(humidity);
+                    let p2 = $("<p>").addClass("card-text").text(temp);
+                    let img1 = $("<img>").addClass("card-body").attr("src", iconURLForecastUrl);
+                    col.append(card.append(body.append(title, p1, p2, img1)))
+                     $("#forecast .row").append(col);
+                    makeCard(humidity, temp, iconURLForecastUrl);
+                }
+
+               
+            }
     }); 
 };
 
+
+function makeCard(humidity, temp, iconURLForecastUrl){
+
+}
 
 // function to request and return UV Index
 function getUVIndex(lon,lat){
@@ -177,7 +186,6 @@ function getUVIndex(lon,lat){
 }
 
 function renderTodayWeather(city, humidity, iconURL, temperature, wind) {
-    // $("#dateCurrent").text(`Date: ${city}`);
     $("#cityCurrent").text(`City: ${city}`);
     $("#tempCurrent").text(`Temperature: ${temperature} °C`);
     $("#humidityCurrent").text(`Humidity: ${humidity} %`);
