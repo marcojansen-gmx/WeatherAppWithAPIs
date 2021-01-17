@@ -4,6 +4,8 @@ const apiKey = "a68c335056a4a3d1000ef6aa6b67cc0b";
 let searchedCities = [];
 let previousSearches;
 let indexUV;
+let lon = -33.8679;
+let lat = 151.2073;
 
 // URL queries
 let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=";
@@ -22,6 +24,14 @@ function init() {
         getFiveDayForecast(city);
         getCurrentDate();
         getUVIndex(lon,lat);
+    }
+    else {
+        city="Sydney"
+        clear();
+        getCurrentWeather(city);
+        getFiveDayForecast(city);
+        getCurrentDate();
+        // getUVIndex(lon,lat);
     }
 }
 
@@ -75,7 +85,7 @@ function getLastSearch() {
 function renderSearchedCities(searchedCities){
     console.log(searchedCities);
     let ul = $("<ul>");
-    ul.addClass("list-group");
+    ul.addClass("list-group row");
     $("#previousSearch").append(ul); 
     console.log(searchedCities.length)
     for (let i = searchedCities.length; i >= 0; i--) {
@@ -119,9 +129,9 @@ function getCurrentWeather(city) {
             let iconURL = `https://openweathermap.org/img/wn/${iconID}@2x.png`
             console.log(city, humidity, temperature, wind)
             renderTodayWeather(city, humidity, iconURL, temperature, wind)
-            let lon = res.coord.lon;
+            lon = res.coord.lon;
             console.log(lon);
-            let lat = res.coord.lat;
+            lat = res.coord.lat;
             console.log(lat);
             getUVIndex(lon,lat);
         });
