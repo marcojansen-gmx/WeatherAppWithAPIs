@@ -6,33 +6,75 @@ let previousSearches;
 let indexUV;
 let lon = -33.8679;
 let lat = 151.2073;
+let geoLat;
+let geoLon;
+
 
 // URL queries
 let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=";
+let queryURLByGeo = "https://api.openweathermap.org/data/2.5/weather?lat=";
 let queryURL5Days = "https://api.openweathermap.org/data/2.5/forecast?q=";
+let query5DayUrlGeolocation = "api.openweathermap.org/data/2.5/forecast?lat=";
 
 init();
 
 function init() {
     let city = getLastSearch();
+
+    console.log(city);
     
     // request last cities from localstorage
 
     if (city === "empty") {
         clear();
-        getCurrentWeather(city);
-        getFiveDayForecast(city);
-        getCurrentDate();
-        getUVIndex(lon,lat);
+     
+        // getCurrentWeather(city);
+        // getFiveDayForecast(city);
+        // getCurrentDate();
+        // getUVIndex(lon,lat);
     }
     else {
-        city="Sydney"
         clear();
         getCurrentWeather(city);
         getFiveDayForecast(city);
         getCurrentDate();
-        // getUVIndex(lon,lat);
     }
+}
+
+$("#searchLocation").on("click", searchByGeoLocation);
+
+function searchByGeoLocation() {
+    console.log("test");
+  if (navigator.geolocation) {
+    console.log("if condition")
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    $("#error").text("Geolocation is not supported by this browser.");
+  }
+}
+
+function showPosition(position){
+    geoLat = position.coords.latitude;
+    geoLon = position.coords.longitude;
+    console.log(geoLat, geoLon);
+    getCurrentWeatherGeolocation (geoLat, geoLon);
+
+}
+
+function showGeoLocationError(error){
+    console.log(error);
+}
+
+function getLastSearch() {
+    let city = "empty";
+    // get values of local storage;   
+    let searchedValues = JSON.parse(localStorage.getItem("cities")) || [];
+    if (Array.isArray(searchedValues) && searchedValues.length > 0){
+        return searchedValues[searchedValues.length-1]
+    }
+    renderSearchedCities(searchedValues);  
+    return city;
+      
 }
 
 $("#previousSearch ul").on("click", "li", function(){
@@ -75,12 +117,7 @@ document.getElementById("dateCurrent")
 .innerHTML = moment().format('MMMM Do YYYY');
   }
 
-function getLastSearch() {
-    let city = "empty";
-    // get values of local storage;   
-    let searchedValues = JSON.parse(localStorage.getItem("cities")) || [];
-    renderSearchedCities(searchedValues);    
-}
+
 
 function renderSearchedCities(searchedCities){
     console.log(searchedCities);
@@ -110,6 +147,12 @@ function searchWeather() {
         makeRow(cityName);   
 }
 
+$("#citySearch").on("keypress", function(event){
+    if(event.keyCode == 13){
+        searchWeather();
+    }
+})
+
 // function to request and return current weather
 function getCurrentWeather(city) {
     clear();
@@ -134,6 +177,34 @@ function getCurrentWeather(city) {
             lat = res.coord.lat;
             console.log(lat);
             getUVIndex(lon,lat);
+        });
+
+}
+
+function getCurrentWeatherGeolocation(geoLat, geoLon) {
+    clear();
+    
+    var queryWeatherUrlGeolocation = queryURLByGeo + geoLat + "&lon=" + geoLon + "&appid=" + apiKey;
+    console.log(queryWeatherUrlGeolocation);
+    $.ajax({
+        url: queryWeatherUrlGeolocation,
+        method: "GET"
+    }).then(
+        function (res) {
+            console.log(res);
+            let city = res.name;
+            let humidity = res.main.humidity
+            let temperature = Math.round((res.main.temp - 273.15) * 100) / 100;
+            let wind = Math.round((res.wind.speed * 1.6) * 100) / 100;
+            let iconID = res.weather[0].icon;
+            let iconURL = `https://openweathermap.org/img/wn/${iconID}@2x.png`
+            console.log(city, humidity, temperature, wind)
+            renderTodayWeather(city, humidity, iconURL, temperature, wind)
+            lon = res.coord.geoLon;
+            console.log(geoLon);
+            lat = res.coord.geoLat;
+            console.log(geoLat);
+            getUVIndex(geoLon,geoLat);
         });
 
 }
@@ -171,6 +242,41 @@ function getFiveDayForecast(city) {
                 }
 
                
+            }
+    }); 
+};
+
+function getFiveDayForecastGeolocation(geoLat, geoLon) {
+    var query5DayUrlGeolocation = queryURL5Days + geoLat + "&lon=" + geoLon + "&appid=" +apiKey;
+    console.log(query5DayUrlGeolocation);
+    $.ajax({
+        url: query5DayUrlGeolocation,
+        method: "GET"
+    }).then(
+        function (res) {
+            console.log(res);
+            $("#forecast").html("<h4 class=\"mt-3\">5-Day Forecast:</h4>").append("<div class=\"row\">")
+            for (var i = 0; i < res.list.length - 1; i++) {
+
+                if (res.list[i].dt_txt.indexOf("15:00:00") !== -1) {
+                    let humidity = res.list[i].main.humidity;
+                    let temp = Math.round((res.list[i].main.temp - 273.15) * 100) / 100;
+                    let iconIDForecast = res.list[i].weather[0].icon;
+                    let iconURLForecastUrl = `https://openweathermap.org/img/wn/${iconIDForecast}@2x.png`
+
+                    let col = $("<div>").addClass("col-md-2");
+                    let card = $("<div>").addClass("card bg-primary text-white");
+                    let body = $("<div>").addClass("card-body p-2");
+
+                    let title = $("<h6>").addClass("card-title").text(new Date(res.list[i].dt_txt).toLocaleDateString());
+
+                    let p1 = $("<p>").addClass("card-text").text(humidity);
+                    let p2 = $("<p>").addClass("card-text").text(temp);
+                    let img1 = $("<img>").addClass("card-body").attr("src", iconURLForecastUrl);
+                    col.append(card.append(body.append(title, p1, p2, img1)))
+                     $("#forecast .row").append(col);
+                    makeCard(humidity, temp, iconURLForecastUrl);
+                }               
             }
     }); 
 };
