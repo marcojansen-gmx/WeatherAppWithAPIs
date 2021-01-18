@@ -14,7 +14,7 @@ let geoLon;
 let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=";
 let queryURLByGeo = "https://api.openweathermap.org/data/2.5/weather?lat=";
 let queryURL5Days = "https://api.openweathermap.org/data/2.5/forecast?q=";
-let query5DayUrlGeolocation = "api.openweathermap.org/data/2.5/forecast?lat=";
+let query5DayUrlGeolocation = "https://api.openweathermap.org/data/2.5/forecast?lat=";
 
 init();
 
