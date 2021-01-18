@@ -28,8 +28,8 @@ function init() {
     if (city === "empty") {
         clear();
      
-        getCurrentWeather("sydney");
-        getFiveDayForecast("sydney");
+        // getCurrentWeather("sydney");
+        // getFiveDayForecast("sydney");
         // getCurrentDate();
         // getUVIndex(lon,lat);
     }
