@@ -247,10 +247,10 @@ function getFiveDayForecast(city) {
 };
 
 function getFiveDayForecastGeolocation(geoLat, geoLon) {
-    var query5DayUrlGeolocation = queryURL5Days + geoLat + "&lon=" + geoLon + "&appid=" +apiKey;
-    console.log(query5DayUrlGeolocation);
+    var query5DayUrlGeo = query5DayUrlGeolocation + geoLat + "&lon=" + geoLon + "&appid=" +apiKey;
+    console.log(query5DayUrlGeo);
     $.ajax({
-        url: query5DayUrlGeolocation,
+        url: query5DayUrlGeo,
         method: "GET"
     }).then(
         function (res) {
