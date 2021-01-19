@@ -58,7 +58,7 @@ function showPosition(position){
     geoLon = position.coords.longitude;
     console.log(geoLat, geoLon);
     getCurrentWeatherGeolocation (geoLat, geoLon);
-
+    getFiveDayForecastGeolocation(geoLat, geoLon);
 }
 
 function showGeoLocationError(error){
