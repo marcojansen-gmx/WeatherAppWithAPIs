@@ -1,4 +1,13 @@
-# server-side-apis-06## User Story
+# server-side-apis-06
+
+## Your Task
+
+Developers are often tasked with retrieving data from another application's API and using it in the context of their own. Third-party APIs allow developers to access their data and functionality by making requests with specific parameters to a URL. Your challenge is to build a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS.
+
+Use the [OpenWeather API](https://openweathermap.org/api) to retrieve weather data for cities. The documentation includes a section called "How to start" that will provide basic setup and usage instructions. Use `localStorage` to store any persistent data.
+
+
+## User Story
 
 ```
 AS A traveler
@@ -24,6 +33,18 @@ WHEN I open the weather dashboard
 THEN I am presented with the last searched city forecast
 ```
 
-The following image demonstrates the application functionality:
+## Installation
 
-![weather dashboard demo](./Assets/06-server-side-apis-homework-demo.png)
+Deployment URL
+
+https://marcojansen-gmx.github.io/server-side-apis-06/
+
+GitHub URL
+
+https://github.com/marcojansen-gmx/server-side-apis-06
+
+## Mock-Up
+
+The following image shows the web application's appearance and functionality:
+
+![server-side-apis-06 (layout)](https://github.com/marcojansen-gmx/Web-APIs-04/blob/main/screenshot.png?raw=true)
