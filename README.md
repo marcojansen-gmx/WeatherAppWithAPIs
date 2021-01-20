@@ -47,4 +47,4 @@ https://github.com/marcojansen-gmx/server-side-apis-06
 
 The following image shows the web application's appearance and functionality:
 
-![server-side-apis-06 (layout)](https://github.com/marcojansen-gmx/Web-APIs-04/blob/main/screenshot.png?raw=true)
+![server-side-apis-06 (layout)](https://github.com/marcojansen-gmx/server-side-apis-06/blob/main/assets/screenshot.png?raw=true)
